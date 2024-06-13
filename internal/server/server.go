@@ -16,33 +16,27 @@ type InternalServer struct {
 	Server  *http.Server
 	Handler *http.ServeMux
 	// config *Config
-	middlewares []middlewares.IMiddleware
 }
 
-func NewServer(middlewares []middlewares.IMiddleware) *InternalServer {
+func NewServer() *InternalServer {
 	mux := http.NewServeMux()
+	stack := middlewares.CreateStack(
+		middlewares.IsAuthed,
+	)
 	return &InternalServer{
 		Server: &http.Server{
 			Addr:    ":8080",
-			Handler: mux,
+			Handler: stack(mux),
 		},
-		Handler:     mux,
-		middlewares: middlewares,
+		Handler: mux,
 	}
 }
 
 func RegisterHandlers(iserver *InternalServer, handlers map[string]http.Handler) {
 	for path, handler := range handlers {
-		registerHandler(iserver, path, handler)
+		iserver.Handler.Handle(path, handler)
 	}
 
-}
-
-func registerHandler(iserver *InternalServer, path string, handler http.Handler) {
-	for _, middleware := range iserver.middlewares {
-		handler = middleware.HandlerFunc(handler)
-	}
-	iserver.Handler.Handle(path, handler)
 }
 
 func Run(iserver *InternalServer) {
