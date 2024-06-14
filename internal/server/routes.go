@@ -12,5 +12,6 @@ func RegisterRoutes(
 	// Register the routes
 	return map[string]http.Handler{
 		"/products/{id}": product.GetByID(),
+		"POST /products": product.Create(),
 	}
 }

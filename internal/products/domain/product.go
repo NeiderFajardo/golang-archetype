@@ -1,13 +1,16 @@
 package domain
 
 type Product struct {
-	ID   int
-	Name string
+	ID          int
+	Name        string
+	Description string
+	Price       float64
 }
 
-func NewProduct(id int, name string) *Product {
+func NewProduct(name, description string, price float64) *Product {
 	return &Product{
-		ID:   id,
-		Name: name,
+		Name:        name,
+		Description: description,
+		Price:       price,
 	}
 }

@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/NeiderFajardo/internal/products/api/models"
 	"github.com/NeiderFajardo/internal/products/application"
+	"github.com/NeiderFajardo/pkg/tools"
 )
 
 type ProductHandler struct {
@@ -28,5 +30,23 @@ func (ph *ProductHandler) GetByID() http.HandlerFunc {
 			return
 		}
 		w.Write([]byte(result.Name))
+	}
+}
+
+func (ph *ProductHandler) Create() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Add your logic here
+		productRequest, err := tools.Decode[models.ProductRequest](r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		productID, err := ph.productService.Create(&productRequest)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		response := models.NewProductResponse(productID)
+		tools.Encode(w, r, http.StatusOK, response)
 	}
 }
