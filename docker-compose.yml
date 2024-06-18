@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   server:
     container_name: ${PROJECT_NAME}_server
@@ -9,3 +9,21 @@ services:
       - .env
     ports:
       - '${SERVER_PORT}:${SERVER_PORT}'
+    links:
+      - mongodb
+    networks:
+      - backend
+  mongodb:
+    container_name: test-mongo
+    image: mongo:latest
+    ports:
+      - '${MONGODB_PORT}:${MONGODB_PORT}'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+    name: backend

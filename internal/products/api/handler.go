@@ -29,7 +29,8 @@ func (ph *ProductHandler) GetByID() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		w.Write([]byte(result.Name))
+		response := models.NewProductResponse(result.ID, result.Name, result.Description, result.Price)
+		tools.Encode(w, r, http.StatusOK, response)
 	}
 }
 
@@ -46,7 +47,7 @@ func (ph *ProductHandler) Create() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		response := models.NewProductResponse(productID)
+		response := models.NewProductResponse(productID, productRequest.Name, productRequest.Description, productRequest.Price)
 		tools.Encode(w, r, http.StatusOK, response)
 	}
 }

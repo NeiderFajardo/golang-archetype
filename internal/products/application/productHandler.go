@@ -1,6 +1,9 @@
 package application
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/NeiderFajardo/internal/products/api/models"
 	"github.com/NeiderFajardo/internal/products/domain"
 )
@@ -21,9 +24,27 @@ func NewProductService(repository domain.IProductRepository) IProductService {
 }
 
 func (ph ProductService) GetByID(id int) (*domain.Product, error) {
-	return ph.productRepository.GetByID(id), nil
+	result, err := ph.productRepository.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (ph ProductService) Create(product *models.ProductRequest) (int, error) {
-	return 0, nil
+	if problems := product.Valid(context.Background()); len(problems) > 0 {
+		return 0, fmt.Errorf("Invalid %T: %d", product, len(problems))
+	}
+
+	productToSave := domain.NewProduct(
+		product.Id,
+		product.Name,
+		product.Description,
+		product.Price,
+	)
+	result, err := ph.productRepository.Create(productToSave)
+	if err != nil {
+		return 0, err
+	}
+	return result, nil
 }

@@ -7,8 +7,9 @@ type Product struct {
 	Price       float64
 }
 
-func NewProduct(name, description string, price float64) *Product {
+func NewProduct(id int, name, description string, price float64) *Product {
 	return &Product{
+		ID:          id,
 		Name:        name,
 		Description: description,
 		Price:       price,
