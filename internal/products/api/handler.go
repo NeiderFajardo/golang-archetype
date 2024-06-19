@@ -6,7 +6,7 @@ import (
 
 	"github.com/NeiderFajardo/internal/products/api/models"
 	"github.com/NeiderFajardo/internal/products/application"
-	"github.com/NeiderFajardo/pkg/tools"
+	"github.com/NeiderFajardo/pkg/utils"
 )
 
 type ProductHandler struct {
@@ -30,14 +30,14 @@ func (ph *ProductHandler) GetByID() http.HandlerFunc {
 			return
 		}
 		response := models.NewProductResponse(result.ID, result.Name, result.Description, result.Price)
-		tools.Encode(w, r, http.StatusOK, response)
+		utils.Encode(w, http.StatusOK, response)
 	}
 }
 
 func (ph *ProductHandler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Add your logic here
-		productRequest, err := tools.Decode[models.ProductRequest](r)
+		productRequest, err := utils.Decode[models.ProductRequest](r)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -48,6 +48,6 @@ func (ph *ProductHandler) Create() http.HandlerFunc {
 			return
 		}
 		response := models.NewProductResponse(productID, productRequest.Name, productRequest.Description, productRequest.Price)
-		tools.Encode(w, r, http.StatusOK, response)
+		utils.Encode(w, http.StatusCreated, response)
 	}
 }

@@ -23,6 +23,7 @@ func NewServer() *InternalServer {
 	mux := http.NewServeMux()
 	stack := middlewares.CreateStack(
 		middlewares.IsAuthed,
+		middlewares.LogResponse,
 	)
 	return &InternalServer{
 		Server: &http.Server{
