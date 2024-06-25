@@ -1,6 +1,10 @@
 package models
 
-import "context"
+import (
+	"context"
+
+	"github.com/NeiderFajardo/pkg/apierrors"
+)
 
 // Product model
 type ProductRequest struct {
@@ -10,10 +14,9 @@ type ProductRequest struct {
 	Price       float64 `json:"price"`
 }
 
-func (pr *ProductRequest) Valid(ctx context.Context) map[string]string {
-	var problems = make(map[string]string)
-	if pr.Id == 0 {
-		problems["id"] = "id is required"
+func (pr *ProductRequest) Valid(ctx context.Context) *apierrors.ApiError {
+	if pr.Id <= 0 {
+		return apierrors.BadRequest("The id is required", "parameter_required", "id")
 	}
-	return problems
+	return nil
 }

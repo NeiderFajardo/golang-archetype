@@ -6,6 +6,7 @@ import (
 
 	"github.com/NeiderFajardo/internal/products/api/models"
 	"github.com/NeiderFajardo/internal/products/application"
+	"github.com/NeiderFajardo/internal/server/response"
 	"github.com/NeiderFajardo/pkg/utils"
 )
 
@@ -24,9 +25,9 @@ func (ph *ProductHandler) GetByID() http.HandlerFunc {
 		// Add your logic here
 		id := r.PathValue("id")
 		intId, _ := strconv.Atoi(id)
-		result, err := ph.productService.GetByID(intId)
+		result, err := ph.productService.GetByID(r.Context(), intId)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			response.ResponseError(w, err)
 			return
 		}
 		response := models.NewProductResponse(result.ID, result.Name, result.Description, result.Price)
@@ -39,12 +40,12 @@ func (ph *ProductHandler) Create() http.HandlerFunc {
 		// Add your logic here
 		productRequest, err := utils.Decode[models.ProductRequest](r)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			response.ResponseError(w, err)
 			return
 		}
-		productID, err := ph.productService.Create(&productRequest)
+		productID, err := ph.productService.Create(r.Context(), &productRequest)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			response.ResponseError(w, err)
 			return
 		}
 		response := models.NewProductResponse(productID, productRequest.Name, productRequest.Description, productRequest.Price)

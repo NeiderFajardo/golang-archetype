@@ -2,15 +2,14 @@ package application
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/NeiderFajardo/internal/products/api/models"
 	"github.com/NeiderFajardo/internal/products/domain"
 )
 
 type IProductService interface {
-	GetByID(id int) (*domain.Product, error)
-	Create(product *models.ProductRequest) (int, error)
+	GetByID(ctx context.Context, id int) (*domain.Product, error)
+	Create(ctx context.Context, product *models.ProductRequest) (int, error)
 }
 
 type ProductService struct {
@@ -23,17 +22,17 @@ func NewProductService(repository domain.IProductRepository) IProductService {
 	}
 }
 
-func (ph ProductService) GetByID(id int) (*domain.Product, error) {
-	result, err := ph.productRepository.GetByID(id)
+func (ph ProductService) GetByID(ctx context.Context, id int) (*domain.Product, error) {
+	result, err := ph.productRepository.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-func (ph ProductService) Create(product *models.ProductRequest) (int, error) {
-	if problems := product.Valid(context.Background()); len(problems) > 0 {
-		return 0, fmt.Errorf("Invalid %T: %d", product, len(problems))
+func (ph ProductService) Create(ctx context.Context, product *models.ProductRequest) (int, error) {
+	if problems := product.Valid(ctx); problems != nil {
+		return 0, problems
 	}
 
 	productToSave := domain.NewProduct(
@@ -42,7 +41,7 @@ func (ph ProductService) Create(product *models.ProductRequest) (int, error) {
 		product.Description,
 		product.Price,
 	)
-	result, err := ph.productRepository.Create(productToSave)
+	result, err := ph.productRepository.Create(ctx, productToSave)
 	if err != nil {
 		return 0, err
 	}
