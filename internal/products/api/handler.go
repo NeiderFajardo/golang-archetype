@@ -30,8 +30,11 @@ func (ph *ProductHandler) GetByID() http.HandlerFunc {
 			response.ResponseError(w, err)
 			return
 		}
-		response := models.NewProductResponse(result.ID, result.Name, result.Description, result.Price)
-		utils.Encode(w, http.StatusOK, response)
+		productResponse := models.NewProductResponse(result.ID, result.Name, result.Description, result.Price)
+		errDecode := utils.Encode(w, http.StatusOK, productResponse)
+		if errDecode != nil {
+			response.ResponseError(w, errDecode)
+		}
 	}
 }
 
@@ -48,7 +51,10 @@ func (ph *ProductHandler) Create() http.HandlerFunc {
 			response.ResponseError(w, err)
 			return
 		}
-		response := models.NewProductResponse(productID, productRequest.Name, productRequest.Description, productRequest.Price)
-		utils.Encode(w, http.StatusCreated, response)
+		productResponse := models.NewProductResponse(productID, productRequest.Name, productRequest.Description, productRequest.Price)
+		errDecode := utils.Encode(w, http.StatusCreated, productResponse)
+		if errDecode != nil {
+			response.ResponseError(w, errDecode)
+		}
 	}
 }
