@@ -1,5 +1,6 @@
 package config
 
+// MongoConfig is a struct that holds the configuration for the MongoDB connection
 type MongoConfig struct {
 	uri        string
 	database   string
