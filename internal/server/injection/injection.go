@@ -1,6 +1,7 @@
 package injection
 
 import (
+	"github.com/NeiderFajardo/config"
 	"github.com/NeiderFajardo/internal/products/api"
 	"github.com/NeiderFajardo/internal/products/application"
 	"github.com/NeiderFajardo/internal/products/infrastructure"
@@ -13,6 +14,7 @@ func Init() {
 	// Start the application
 	fx.New(
 		fx.Provide(
+			config.GetMongoConfig,
 			database.NewMongoClient,
 			infrastructure.NewProductRepository,
 			application.NewProductService,

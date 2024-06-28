@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"github.com/NeiderFajardo/config"
 	"log"
 	"time"
 
@@ -16,17 +17,16 @@ type MongoDatabase struct {
 	Cancel     context.CancelFunc
 }
 
-func NewMongoClient() *MongoDatabase {
+func NewMongoClient(config *config.MongoConfig) *MongoDatabase {
 	// Initialize the database
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
 	// Poner esto como configuración
-	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://root:password@mongodb:27017/"))
+	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(config.URI()))
 	if err != nil {
 		log.Fatalf("connection error :%v", err)
-		panic(err)
 	}
-	collection := mongoClient.Database("test").Collection("products")
+	collection := mongoClient.Database(config.Database()).Collection(config.Collection())
 
 	return &MongoDatabase{
 		Collection: collection,
