@@ -2,17 +2,21 @@ package infrastructure
 
 import (
 	"context"
+	"testing"
+
 	"github.com/NeiderFajardo/pkg/apierrors"
 	"github.com/NeiderFajardo/pkg/database"
-	"testing"
 )
 
 func TestProductRepository_GetByID_NotFound(t *testing.T) {
 
 	testDatabase := database.SetupTestDatabase()
+	params := ProductRepositoryParams{
+		DbClient: testDatabase.MongoDatabase,
+	}
 	defer testDatabase.TearDown()
 
-	productRepository := NewProductRepository(testDatabase.MongoDatabase)
+	productRepository := NewProductRepository(params)
 	_, err := productRepository.GetByID(context.Background(), 1)
 	resultError, ok := err.(*apierrors.ApiError)
 	if !ok {

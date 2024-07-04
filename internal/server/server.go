@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/NeiderFajardo/internal/server/middlewares"
-	"github.com/NeiderFajardo/pkg/database"
 )
 
 type InternalServer struct {
@@ -41,7 +40,7 @@ func RegisterHandlers(iserver *InternalServer, handlers map[string]http.Handler)
 
 }
 
-func Run(iserver *InternalServer, dbClient *database.MongoDatabase) {
+func RunHttpServer(iserver *InternalServer) {
 	ctx, _ := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
@@ -59,7 +58,6 @@ func Run(iserver *InternalServer, dbClient *database.MongoDatabase) {
 
 	shutdownCtx, shutdownRelease := context.WithTimeout(context.Background(), 5*time.Second)
 	defer shutdownRelease()
-	defer database.CloseConnection(dbClient)
 
 	if err := iserver.Server.Shutdown(shutdownCtx); err != nil {
 		log.Fatalf("Failed to shutdown server: %v", err)

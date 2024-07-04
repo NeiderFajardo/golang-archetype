@@ -17,9 +17,9 @@ type ProductRepository struct {
 	dbClient *database.MongoDatabase
 }
 
-func NewProductRepository(dbClient *database.MongoDatabase) domain.IProductRepository {
+func NewProductRepository(params ProductRepositoryParams) domain.IProductRepository {
 	return &ProductRepository{
-		dbClient: dbClient,
+		dbClient: params.DbClient,
 	}
 }
 
@@ -35,7 +35,7 @@ func (pr *ProductRepository) GetByID(ctx context.Context, id int) (*domain.Produ
 			return nil, apierrors.NotFound(errorMessage, "not_found", "id")
 		}
 		if mongo.IsTimeout(err) {
-			return nil, errors.New("Timeout getting product")
+			return nil, errors.New("timeout getting product")
 		}
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (pr *ProductRepository) Create(ctx context.Context, product *domain.Product
 	_, err := pr.dbClient.Collection.InsertOne(ctx, product)
 	if err != nil {
 		if mongo.IsTimeout(err) {
-			return 0, errors.New("Timeout creating product")
+			return 0, errors.New("timeout creating product")
 		}
 		if mongo.IsDuplicateKeyError(err) {
 			return 0, apierrors.BadRequest("Product already exists", "conflict", "id")
