@@ -1,6 +1,6 @@
 package main
 
-import "github.com/NeiderFajardo/internal/server/injection"
+import "github.com/NeiderFajardo/internal/injection"
 
 func main() {
 	// Start the application
