@@ -9,9 +9,7 @@ import (
 
 var ProductInfrastructureModule = fx.Module("productInfrastructure",
 	fx.Provide(
-		fx.Annotate(
-			buildProductRepositoryParams,
-		),
+		buildProductRepositoryParams,
 		infrastructure.NewProductRepository,
 	),
 )
