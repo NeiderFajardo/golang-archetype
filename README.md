@@ -12,5 +12,18 @@ This project is created with the idea of offering the same functionalities as th
 
 :white_check_mark: I hope it is useful and that you learn something new, feel free to contribute, suggest or make any comment that will help to improve the project. Thank you!
 
-## Built with
-Golang
+## :hammer: Built with
+- Language: Golang
+- For dependency injection: fx
+- Database: MongoDB
+- to containerize: Docker
+- Live reload: Air
+
+## Getting Started
+![golang-archetype-DiagramaGeneral drawio](https://github.com/NeiderFajardo/golang-archetype/assets/22989456/446e1ed2-4a09-4cb2-818f-13d342a56215)
+
+## Usage
+
+## License
+
+## Contact
