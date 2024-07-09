@@ -1,6 +1,7 @@
 package injection
 
 import (
+	"github.com/NeiderFajardo/config"
 	"github.com/NeiderFajardo/internal/products/api/fxProductApi"
 	"github.com/NeiderFajardo/internal/products/application/fxProductApplication"
 	"github.com/NeiderFajardo/internal/products/infrastructure/fxProductInfrastructure"
@@ -18,6 +19,7 @@ func Init() {
 			fxProductApi.ProductApiModule,
 		),
 		fx.Provide(
+			config.GetServerConfig,
 			server.NewServer,
 			server.RegisterRoutes),
 		fx.Invoke(

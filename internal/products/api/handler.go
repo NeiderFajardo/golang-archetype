@@ -41,12 +41,12 @@ func (ph *ProductHandler) GetByID() http.HandlerFunc {
 func (ph *ProductHandler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Add your logic here
-		productRequest, err := utils.Decode[models.ProductRequest](r)
+		productRequest, err := utils.DecodeValid[*models.ProductRequest](r)
 		if err != nil {
 			response.ResponseError(w, err)
 			return
 		}
-		productID, err := ph.productService.Create(r.Context(), &productRequest)
+		productID, err := ph.productService.Create(r.Context(), productRequest)
 		if err != nil {
 			response.ResponseError(w, err)
 			return

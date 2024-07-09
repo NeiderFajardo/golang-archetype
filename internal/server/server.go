@@ -3,22 +3,23 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/NeiderFajardo/config"
 	"github.com/NeiderFajardo/internal/server/middlewares"
 )
 
 type InternalServer struct {
 	Server  *http.Server
 	Handler *http.ServeMux
-	// config *Config
 }
 
-func NewServer() *InternalServer {
+func NewServer(config *config.ServerConfig) *InternalServer {
 	mux := http.NewServeMux()
 	stack := middlewares.CreateStack(
 		middlewares.IsAuthed,
@@ -26,7 +27,7 @@ func NewServer() *InternalServer {
 	)
 	return &InternalServer{
 		Server: &http.Server{
-			Addr:    ":8080",
+			Addr:    fmt.Sprintf(":%s", config.Port()),
 			Handler: stack(mux),
 		},
 		Handler: mux,

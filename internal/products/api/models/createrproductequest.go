@@ -14,9 +14,10 @@ type ProductRequest struct {
 	Price       float64 `json:"price"`
 }
 
-func (pr *ProductRequest) Valid(ctx context.Context) *apierrors.ApiError {
+func (pr *ProductRequest) Valid(ctx context.Context) map[string]apierrors.ApiError {
+	problems := make(map[string]apierrors.ApiError)
 	if pr.Id <= 0 {
-		return apierrors.BadRequest("The id is required", "parameter_required", "id")
+		problems["id"] = *apierrors.BadRequest("id must be greater than 0", "invalid_id", "id")
 	}
-	return nil
+	return problems
 }

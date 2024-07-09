@@ -31,10 +31,6 @@ func (ph ProductService) GetByID(ctx context.Context, id int) (*domain.Product, 
 }
 
 func (ph ProductService) Create(ctx context.Context, product *models.ProductRequest) (int, error) {
-	if problems := product.Valid(ctx); problems != nil {
-		return 0, problems
-	}
-
 	productToSave := domain.NewProduct(
 		product.Id,
 		product.Name,

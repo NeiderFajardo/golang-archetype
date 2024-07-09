@@ -1,6 +1,17 @@
 package config
 
+import "os"
+
 // GetMongoConfig returns a MongoConfig struct with the default values
 func GetMongoConfig() *MongoConfig {
-	return LoadMongoConfig("mongodb://root:password@mongodb:27017/", "test", "products")
+	mongoUri := os.Getenv("MONGO_URI")
+	mongoDatabase := os.Getenv("MONGO_DATABASE")
+	mongoCollection := os.Getenv("MONGO_COLLECTION")
+	return LoadMongoConfig(mongoUri, mongoDatabase, mongoCollection)
+}
+
+// GetServerConfig returns a ServerConfig struct with the default values
+func GetServerConfig() *ServerConfig {
+	serverPort := os.Getenv("SERVER_PORT")
+	return LoadServerConfig(serverPort)
 }
