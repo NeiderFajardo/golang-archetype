@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/NeiderFajardo/config"
-	"github.com/NeiderFajardo/internal/server/middlewares"
+	"github.com/NeiderFajardo/pkg/server/middlewares"
 )
 
 type InternalServer struct {

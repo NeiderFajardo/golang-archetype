@@ -9,5 +9,6 @@ var ProductApplicationModule = fx.Module("productApplication",
 	fx.Provide(
 		// Because product service depends on the IProductRepository interface, this does not violate the dependency rule from DDD
 		application.NewProductService,
+		application.NewProductStockService,
 	),
 )

@@ -13,7 +13,7 @@ This project is created with the idea of offering the same functionalities as th
 :white_check_mark: I hope it is useful and that you learn something new, feel free to contribute, suggest or make any comment that will help to improve the project. Thank you!
 
 ## :hammer: Built with
-- Language: Golang
+- Language: Golang >= 1.22.0
 - For dependency injection: fx
 - Database: MongoDB
 - to containerize: Docker

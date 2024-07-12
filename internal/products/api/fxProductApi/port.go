@@ -8,5 +8,6 @@ import (
 var ProductApiModule = fx.Module("productApi",
 	fx.Provide(
 		api.NewProductHandler,
+		api.NewProductStockHandler,
 	),
 )

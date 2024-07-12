@@ -6,7 +6,7 @@ import (
 
 	"github.com/NeiderFajardo/internal/products/api/models"
 	"github.com/NeiderFajardo/internal/products/application"
-	"github.com/NeiderFajardo/internal/server/response"
+	"github.com/NeiderFajardo/pkg/server/response"
 	"github.com/NeiderFajardo/pkg/utils"
 )
 
@@ -30,7 +30,7 @@ func (ph *ProductHandler) GetByID() http.HandlerFunc {
 			response.ResponseError(w, err)
 			return
 		}
-		productResponse := models.NewProductResponse(result.ID, result.Name, result.Description, result.Price)
+		productResponse := models.NewProductResponse(result.ID, result.Name, result.Description, result.Price, result.Stock)
 		errDecode := utils.Encode(w, http.StatusOK, productResponse)
 		if errDecode != nil {
 			response.ResponseError(w, errDecode)
@@ -51,7 +51,12 @@ func (ph *ProductHandler) Create() http.HandlerFunc {
 			response.ResponseError(w, err)
 			return
 		}
-		productResponse := models.NewProductResponse(productID, productRequest.Name, productRequest.Description, productRequest.Price)
+		productResponse := models.NewProductResponse(
+			productID,
+			productRequest.Name,
+			productRequest.Description,
+			productRequest.Price,
+			productRequest.Stock)
 		errDecode := utils.Encode(w, http.StatusCreated, productResponse)
 		if errDecode != nil {
 			response.ResponseError(w, errDecode)

@@ -36,6 +36,7 @@ func (ph ProductService) Create(ctx context.Context, product *models.ProductRequ
 		product.Name,
 		product.Description,
 		product.Price,
+		product.Stock,
 	)
 	result, err := ph.productRepository.Create(ctx, productToSave)
 	if err != nil {

@@ -57,3 +57,18 @@ func (pr *ProductRepository) Create(ctx context.Context, product *domain.Product
 	}
 	return product.ID, nil
 }
+
+func (pr *ProductRepository) SubtractFromStock(ctx context.Context, id int, quantity int) error {
+	ctx, cancel := context.WithTimeout(ctx, time.Second)
+	defer cancel()
+	filter := bson.D{{Key: "id", Value: id}}
+	update := bson.D{{Key: "$inc", Value: bson.D{{Key: "stock", Value: -quantity}}}}
+	_, err := pr.dbClient.Collection.UpdateOne(ctx, filter, update)
+	if err != nil {
+		if mongo.IsTimeout(err) {
+			return errors.New("timeout subtracting from stock")
+		}
+		return err
+	}
+	return nil
+}
