@@ -6,7 +6,7 @@ import (
 
 	"github.com/NeiderFajardo/internal/products/api/models"
 	"github.com/NeiderFajardo/internal/products/application"
-	"github.com/NeiderFajardo/pkg/server/response"
+	"github.com/NeiderFajardo/pkg/response"
 	"github.com/NeiderFajardo/pkg/utils"
 )
 

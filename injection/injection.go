@@ -5,7 +5,7 @@ import (
 	"github.com/NeiderFajardo/internal/products/api/fxProductApi"
 	"github.com/NeiderFajardo/internal/products/application/fxProductApplication"
 	"github.com/NeiderFajardo/internal/products/infrastructure/fxProductInfrastructure"
-	"github.com/NeiderFajardo/pkg/server"
+	"github.com/NeiderFajardo/server"
 	"go.uber.org/fx"
 )
 
