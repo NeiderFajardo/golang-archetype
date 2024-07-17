@@ -21,7 +21,7 @@ func (prm *productRepositoryMock) Create(ctx context.Context, product *domain.Pr
 	return 0, nil
 }
 
-func (prm *productRepositoryMock) SubtractFromStock(ctx context.Context, id int, quantity int) error {
+func (prm *productRepositoryMock) Update(ctx context.Context, product *domain.Product) error {
 	return nil
 }
 

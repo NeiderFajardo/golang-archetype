@@ -12,6 +12,7 @@ func LogResponse(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ew := utils.ExtendResponseWriter(w)
 		next.ServeHTTP(ew, r)
+		// TODO: Agregar logs para cuando hay errores internos del servidor
 		info := fmt.Sprintf("%s %s responded %v", r.Method, r.URL.Path, ew.StatusCode)
 		ew.Done()
 		logger.Info(info)

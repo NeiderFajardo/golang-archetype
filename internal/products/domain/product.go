@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/NeiderFajardo/pkg/apierrors"
+
 type Product struct {
 	ID          int
 	Name        string
@@ -16,4 +18,12 @@ func NewProduct(id int, name, description string, price float64, stock int) *Pro
 		Price:       price,
 		Stock:       stock,
 	}
+}
+
+func (p *Product) UpdateStock(stock int) *apierrors.ApiError {
+	if stock < 0 {
+		return apierrors.BadRequest("Not enough stock", "not_enough_stock", "stock")
+	}
+	p.Stock = stock
+	return nil
 }

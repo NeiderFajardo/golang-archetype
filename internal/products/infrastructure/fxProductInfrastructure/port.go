@@ -11,6 +11,8 @@ var ProductInfrastructureModule = fx.Module("productInfrastructure",
 	fx.Provide(
 		buildProductRepositoryParams,
 		infrastructure.NewProductRepository,
+		// This setup could be more complex, depends on the requirements
+		infrastructure.NewProductEventHandler,
 	),
 )
 

@@ -4,7 +4,8 @@ import (
 	"context"
 
 	"github.com/NeiderFajardo/internal/products/domain"
-	"github.com/NeiderFajardo/pkg/apierrors"
+	"github.com/NeiderFajardo/internal/products/domain/events"
+	"github.com/google/uuid"
 )
 
 type IProductStockService interface {
@@ -13,11 +14,13 @@ type IProductStockService interface {
 
 type ProductStockService struct {
 	productRepository domain.IProductRepository
+	productPublisher  events.IProductEventHandler
 }
 
-func NewProductStockService(repository domain.IProductRepository) IProductStockService {
+func NewProductStockService(repository domain.IProductRepository, publisher events.IProductEventHandler) IProductStockService {
 	return &ProductStockService{
 		productRepository: repository,
+		productPublisher:  publisher,
 	}
 }
 
@@ -26,10 +29,13 @@ func (ps ProductStockService) SubtractStock(ctx context.Context, id int, quantit
 	if err != nil {
 		return err
 	}
-	if product.Stock < quantity {
-		return apierrors.BadRequest("Not enough stock", "not_enough_stock", "stock")
+	updateError := product.UpdateStock(product.Stock - quantity)
+	if updateError != nil {
+		return updateError
 	}
-	resultErr := ps.productRepository.SubtractFromStock(ctx, id, quantity)
-	// if resultErr is nil then we can raise and handle product updated event
+	resultErr := ps.productRepository.Update(ctx, product)
+	if resultErr == nil {
+		go ps.productPublisher.Notify(events.NewUpdatedStockEvent(uuid.New(), product))
+	}
 	return resultErr
 }

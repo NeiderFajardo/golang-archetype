@@ -9,6 +9,7 @@ import (
 	"github.com/NeiderFajardo/internal/products/domain"
 	"github.com/NeiderFajardo/pkg/apierrors"
 	"github.com/NeiderFajardo/pkg/database"
+	"github.com/NeiderFajardo/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -35,6 +36,7 @@ func (pr *ProductRepository) GetByID(ctx context.Context, id int) (*domain.Produ
 			return nil, apierrors.NotFound(errorMessage, "not_found", "id")
 		}
 		if mongo.IsTimeout(err) {
+			logger.Info(err.Error())
 			return nil, errors.New("timeout getting product")
 		}
 		return nil, err
@@ -58,15 +60,15 @@ func (pr *ProductRepository) Create(ctx context.Context, product *domain.Product
 	return product.ID, nil
 }
 
-func (pr *ProductRepository) SubtractFromStock(ctx context.Context, id int, quantity int) error {
+func (pr *ProductRepository) Update(ctx context.Context, product *domain.Product) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
-	filter := bson.D{{Key: "id", Value: id}}
-	update := bson.D{{Key: "$inc", Value: bson.D{{Key: "stock", Value: -quantity}}}}
+	filter := bson.D{{Key: "id", Value: product.ID}}
+	update := bson.D{{Key: "$set", Value: product}}
 	_, err := pr.dbClient.Collection.UpdateOne(ctx, filter, update)
 	if err != nil {
 		if mongo.IsTimeout(err) {
-			return errors.New("timeout subtracting from stock")
+			return errors.New("timeout updating product")
 		}
 		return err
 	}
