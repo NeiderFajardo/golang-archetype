@@ -26,6 +26,8 @@ This project is created with the idea of offering the same functionalities as th
 
 ## Getting Started
 
+![golang-archetype-DiagramaGeneral drawio (1)](https://github.com/user-attachments/assets/000690c6-bd54-4180-81d3-cc3c5e895abe)
+
 As can be seen in the image, the internal structure of the project is organized by grouping the code by functionalities, similar to what is proposed in the vertical slice architecture, focused on isolating the business domain from external code and allowing for high cohesion between the different layers. Within each folder containing functionality, the traditional layers used in DDD architecture can be observed, which adhere to the rules for internal communication by using interfaces and the fx library.
 
 
