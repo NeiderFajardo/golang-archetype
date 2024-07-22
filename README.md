@@ -32,7 +32,8 @@ As can be seen in the image, the internal structure of the project is organized 
 
 ### Folder Structure
 
-![golang-archetype-Página-3 drawio](https://github.com/user-attachments/assets/d074c5cd-578b-4d2e-a720-17133e52b540)
+![golang-archetype-Página-3 drawio (1)](https://github.com/user-attachments/assets/c63b570d-54cb-4501-88dd-0ffaecb07e51)
+
 
 ### Usage with Docker Compose
 ````
