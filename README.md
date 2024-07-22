@@ -30,6 +30,9 @@ This project is created with the idea of offering the same functionalities as th
 
 As can be seen in the image, the internal structure of the project is organized by grouping the code by functionalities, similar to what is proposed in the vertical slice architecture, focused on isolating the business domain from external code and allowing for high cohesion between the different layers. Within each folder containing functionality, the traditional layers used in DDD architecture can be observed, which adhere to the rules for internal communication by using interfaces and the fx library.
 
+### Folder Structure
+
+![golang-archetype-Página-3 drawio](https://github.com/user-attachments/assets/d074c5cd-578b-4d2e-a720-17133e52b540)
 
 ### Usage with Docker Compose
 ````
