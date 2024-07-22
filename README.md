@@ -12,6 +12,11 @@ This project is created with the idea of offering the same functionalities as th
 
 :white_check_mark: I hope it is useful and that you learn something new, feel free to contribute, suggest or make any comment that will help to improve the project. Thank you!
 
+### Future work
+- Soporte gRPC
+- Eventos
+- Conexión SQL
+
 ## :hammer: Built with
 - Language: Golang >= 1.22.0
 - For dependency injection: fx
@@ -20,7 +25,15 @@ This project is created with the idea of offering the same functionalities as th
 - Live reload: Air
 
 ## Getting Started
-![golang-archetype-DiagramaGeneral drawio](https://github.com/NeiderFajardo/golang-archetype/assets/22989456/446e1ed2-4a09-4cb2-818f-13d342a56215)
+
+As can be seen in the image, the internal structure of the project is organized by grouping the code by functionalities, similar to what is proposed in the vertical slice architecture, focused on isolating the business domain from external code and allowing for high cohesion between the different layers. Within each folder containing functionality, the traditional layers used in DDD architecture can be observed, which adhere to the rules for internal communication by using interfaces and the fx library.
+
+
+### Usage with Docker Compose
+````
+docker-compose up --build
+````
+With docker-compose, it is possible to set up and configure a MongoDB database, which connects using the environment variables configured in the .env file. In this way, you simply need to call the endpoints defined in the router.go file to interact with the data.
 
 ## Usage
 
